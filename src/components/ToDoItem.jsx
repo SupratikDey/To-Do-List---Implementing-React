@@ -1,15 +1,16 @@
-// This component represents a single todo in the list. It lets me mark the todo as completed, edit its text, or delete it.
+// This component represents a single todo in the list.
+// It lets me mark the todo as completed, edit its text, or delete it.
 import { useState } from "react";
 
 function ToDoItem({ todo, onToggle, onDelete, onEdit }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editText, setEditText] = useState(todo.text);
+  const [editing, setEditing] = useState(false);
+  const [text, setText] = useState(todo.text);
 
   function saveEdit() {
-    if (editText.trim()) {
-      onEdit(todo.id, editText.trim());
+    if (text.trim()) {
+      onEdit(todo.id, text.trim());
     }
-    setIsEditing(false);
+    setEditing(false);
   }
 
   return (
@@ -20,11 +21,11 @@ function ToDoItem({ todo, onToggle, onDelete, onEdit }) {
         onChange={() => onToggle(todo.id)}
       />
 
-      {isEditing ? (
+      {editing ? (
         <input
           className="edit-input"
-          value={editText}
-          onChange={(e) => setEditText(e.target.value)}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && saveEdit()}
           autoFocus
         />
@@ -33,12 +34,13 @@ function ToDoItem({ todo, onToggle, onDelete, onEdit }) {
       )}
 
       <div className="todo-actions">
-        {isEditing ? (
+        {editing ? (
           <button onClick={saveEdit}>Save</button>
         ) : (
-          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <button onClick={() => setEditing(true)}>Edit</button>
         )}
-        <button className="delete-btn" onClick={() => onDelete(todo.id)}>Delete</button>
+
+        <button className="delete-btn" onClick={() => onDelete(todo.id)}> Delete </button>
       </div>
     </li>
   );

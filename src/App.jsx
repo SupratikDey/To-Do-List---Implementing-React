@@ -1,4 +1,7 @@
-// I use App as the main component where I keep the todo data and the functions that modify it. I then pass the required data and functions to other components using props.
+// I use App as the main component where I keep the todo data
+// and the functions that modify it. I then pass the required
+// data and functions to other components using props.
+
 import { useState } from "react";
 import Header from "./components/Header";
 import ToDoList from "./components/ToDoList";
@@ -7,9 +10,10 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [newTask, setNewTask] = useState("");
 
-  function handleAddTodo(e) {
+  function addTodo(e) {
     e.preventDefault();
-    if (!newTask.trim()) return; 
+
+    if (!newTask.trim()) return;
 
     const newTodo = {
       id: Date.now(),
@@ -21,47 +25,54 @@ function App() {
     setNewTask("");
   }
 
-  function handleToggle(id) {
+  function toggleTodo(id) {
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        todo.id === id
+          ? { ...todo, completed: !todo.completed }
+          : todo
       )
     );
   }
+
   // Removes a task from the list
-  function handleDelete(id) {
+  function deleteTodo(id) {
     setTodos(todos.filter((todo) => todo.id !== id));
   }
 
-  function handleEdit(id, newText) {
+  function editTodo(id, newText) {
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, text: newText } : todo
+        todo.id === id
+          ? { ...todo, text: newText }
+          : todo
       )
     );
   }
 
   return (
-    <div className="app-container">
+    <div>
       <Header />
 
-      <form className="add-form" onSubmit={handleAddTodo}>
+      <form className="add-form" onSubmit={addTodo}>
         <input
           type="text"
           placeholder="Add a new task..."
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
         />
+
         <button type="submit">Add</button>
       </form>
 
       <ToDoList
         todos={todos}
-        onToggle={handleToggle}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
+        onToggle={toggleTodo}
+        onDelete={deleteTodo}
+        onEdit={editTodo}
       />
     </div>
   );
 }
+
 export default App;
